@@ -9,7 +9,23 @@
     <body>
         <div id="main-container">
             <h1>Library-O-Matic</h1>
-            <button>New Book</button>
+            <button id="new-book-btn">New Book</button>
+            <div id="form-container">
+                <div id="form-div">
+                    <div id=form-close><span id="x">X</span></div>
+                    <form id="new-book-form">
+                        <label for="title">Book Title: </label>
+                        <input type = "text" id="title"></br>
+                        <label for="author">Author: </label>
+                        <input type = "text" id="author"></br>
+                        <label for = "pages">Number of Pages: </label>
+                        <input type = "text" id="pages"></br>
+                        <label for = "read">Have you read it? </label>
+                        <input type="checkbox" id = "read"></br>
+                        <button id="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
             <div id="card-container">
             </div>
         </div>

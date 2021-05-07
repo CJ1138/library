@@ -41,3 +41,20 @@ function displayBooks(){
 }
 
 displayBooks();
+
+const newBookBtn = document.getElementById('new-book-btn');
+const formContainer = document.getElementById('form-container');
+const formX = document.getElementById('x');
+
+function showForm(){
+    formContainer.style.display = 'flex';
+}
+
+function hideForm(){
+    formContainer.style.display = 'none';
+}
+
+newBookBtn.addEventListener('click', showForm);
+
+formX.addEventListener('click', hideForm);
+

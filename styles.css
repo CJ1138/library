@@ -18,3 +18,26 @@
     background-color: lightgrey;
     margin: 5px;
 }
+#form-container{
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    display: none;
+    margin-top: 50px;
+    justify-content: center;
+}
+#form-div{
+    width: 200px;
+    height: 400px;
+    background-color: lightgray;
+    border: 5px solid gray;    
+    background-color: lightgrey;
+}
+#form-close{
+    width: 100;
+    text-align: right;
+    padding: 5px;
+}
+#x{
+    cursor: pointer;
+}
