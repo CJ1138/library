@@ -1,0 +1,20 @@
+#main-container{
+    text-align: center;
+    margin: 0 auto;
+    width: 90%%;
+}
+#card-container{
+    display: flex;
+    justify-content: center;
+    flex-flow: wrap;
+    margin-top: 25px;
+}
+.book-card{
+    font-family: 'Courier New', Courier, monospace;
+    height: 75px;
+    width: 300px;
+    padding: 25px;
+    border: 5px solid gray;    
+    background-color: lightgrey;
+    margin: 5px;
+}
