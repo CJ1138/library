@@ -1,3 +1,6 @@
+body {
+    font-family: 'Courier New', Courier, monospace;
+}
 #main-container{
     text-align: center;
     margin: 0 auto;
@@ -10,25 +13,25 @@
     margin-top: 25px;
 }
 .book-card{
-    font-family: 'Courier New', Courier, monospace;
-    height: 75px;
+    height: 115px;
     width: 300px;
     padding: 25px;
     border: 5px solid gray;    
     background-color: lightgrey;
     margin: 5px;
+    line-height: 160%;
 }
 #form-container{
     text-align: center;
     width: 100%;
     position: absolute;
     display: none;
-    margin-top: 50px;
+    margin-top: 10px;
     justify-content: center;
 }
 #form-div{
-    width: 200px;
-    height: 400px;
+    width: 260px;
+    height: 345px;
     background-color: lightgray;
     border: 5px solid gray;    
     background-color: lightgrey;
@@ -40,4 +43,10 @@
 }
 #x{
     cursor: pointer;
+}
+.book-delete{
+    cursor: pointer;
+}
+input{
+    margin-bottom: 30px;
 }
