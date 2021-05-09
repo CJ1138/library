@@ -20,17 +20,23 @@ myLibrary.push(theHobbit, greatGatsby, catsCradle);
 addBookToLibrary("The Unbearable Lightness of Being", 'Milan Kundera', 393, 'Yes');
 addBookToLibrary("Intimacy", 'Hanif Kureshi', 220, 'Yes');
 
+function addDeleteListener(n){
+    let currentDiv = document.getElementById(n);
+    let delBtn = currentDiv.querySelector('.book-delete');
+    delBtn.addEventListener('click', deleteBook);
+}
 
 const cardContainer = document.getElementById('card-container');
 
 function generateCard(num, book){
     let bookDiv = document.createElement('div');
-        bookDiv.id = "book" + num;
+        bookDiv.id = num;
         bookDiv.classList.add('book-card');
         bookDiv.innerHTML = "Title: " + book.title + "</br> Author: " + 
         book.author + "</br> Page Count: " + book.pages + "</br> Have you read it? " +
         book.read + '</br> <span class = "book-delete">Delete</span>';
         cardContainer.appendChild(bookDiv);
+        addDeleteListener(num);
 }
 
 function displayBooks(){
@@ -89,10 +95,8 @@ function submitForm(){
     hideForm();
 }
 
-let deleteButtons = document.querySelectorAll('.book-delete');
-deleteButtons.forEach(deleteButton => addEventListener('click', deleteBook));
-
 function deleteBook(e){
-    console.log(myLibrary);
-    console.log(e);
+    myLibrary.splice((e.path[1].id), 1);
+    let divToDelete = document.getElementById((e.path[1].id))
+    divToDelete.remove();
 }
