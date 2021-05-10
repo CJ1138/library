@@ -26,6 +26,8 @@ function addDeleteListener(n){
     delBtn.addEventListener('click', deleteBook);
 }
 
+let cardNumber = 1110;
+
 const cardContainer = document.getElementById('card-container');
 
 function generateCard(num, book){
@@ -36,14 +38,14 @@ function generateCard(num, book){
         book.author + "</br> Page Count: " + book.pages + "</br> Have you read it? " +
         book.read + '</br> <span class = "book-delete">Delete</span>';
         cardContainer.appendChild(bookDiv);
+        book.cardRef = cardNumber;
         addDeleteListener(num);
-}
+        cardNumber++;
 
+}
 function displayBooks(){
-    let n = 0;
     myLibrary.forEach(function(book){
-        generateCard(n, book);
-        n++;
+        generateCard(cardNumber, book);
     })
 }
 
@@ -90,13 +92,21 @@ function submitForm(){
         readTick = "Yes"
     }
     addBookToLibrary(formTitle.value, formAuthor.value, formPages.value, readTick);
-    generateCard(myLibrary.length, myLibrary[(myLibrary.length)-1]);
+    generateCard(cardNumber, myLibrary[(myLibrary.length)-1]);
     clearForm();
     hideForm();
 }
 
 function deleteBook(e){
-    myLibrary.splice((e.path[1].id), 1);
-    let divToDelete = document.getElementById((e.path[1].id))
+    let divToDelete = document.getElementById(e.path[1].id);
     divToDelete.remove();
+    deleteFromArray(e.path[1].id);
+
+}
+
+function deleteFromArray(ref){
+    let rightIndex = myLibrary.findIndex(book => book.cardRef == ref);
+    myLibrary.splice(rightIndex, 1);
+    console.log(rightIndex);
+    console.table(myLibrary);
 }
