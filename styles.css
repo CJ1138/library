@@ -1,5 +1,9 @@
 body {
     font-family: 'Courier New', Courier, monospace;
+    color: white;
+}
+h1{
+    color: #3366CC;
 }
 #main-container{
     text-align: center;
@@ -16,10 +20,12 @@ body {
     height: 140px;
     width: 300px;
     padding: 25px;
-    border: 5px solid gray;    
-    background-color: lightgrey;
+    border: 5px solid #3366CC;    
+    background-color: #3399FF;
     margin: 5px;
     line-height: 160%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
 }
 #form-container{
     text-align: center;
@@ -31,10 +37,11 @@ body {
 }
 #form-div{
     width: 260px;
-    height: 345px;
-    background-color: lightgray;
-    border: 5px solid gray;    
-    background-color: lightgrey;
+    height: 390px;
+    border: 5px solid #3366CC;    
+    background-color: #3399FF;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
 }
 #form-close{
     width: 100;
@@ -46,6 +53,8 @@ body {
 }
 .book-delete{
     cursor: pointer;
+    font-weight: bold;
+    margin-top: 15px;
 }
 input{
     margin-bottom: 30px;

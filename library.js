@@ -30,15 +30,22 @@ let cardNumber = 1110;
 
 const cardContainer = document.getElementById('card-container');
 
+let formRead = document.getElementsByName('read');
+
 function generateCard(num, book){
     let bookDiv = document.createElement('div');
         bookDiv.id = num;
         bookDiv.classList.add('book-card');
         bookDiv.innerHTML = "Title: " + book.title + "</br> Author: " + 
         book.author + "</br> Page Count: " + book.pages + "</br> Have you read it? " +
-        book.read + '</br> <span class = "book-delete">Delete</span>';
+        '<label for = "read">Yes </label>' +
+        '<input type="radio" name="card-read'+num+'" value = "Yes" id = "form-read-yes-'+num+'">' +
+        '     <label for = "read">No </label>' +
+        '<input type="radio" name="card-read'+num+'" value = "No" id = "form-read-no-'+num+'">' +
+        '</br> <span class = "book-delete">Delete Book</span>'
         cardContainer.appendChild(bookDiv);
         book.cardRef = cardNumber;
+        setCardRadios(cardNumber);
         addDeleteListener(num);
         cardNumber++;
 
@@ -77,21 +84,25 @@ submitBtn.addEventListener('click', submitForm);
 let formTitle = document.getElementById('form-title');
 let formAuthor = document.getElementById('form-author');
 let formPages = document.getElementById('form-pages');
-let formRead = document.getElementById('form-read');
-let formFields = document.querySelectorAll('input');
+let formFields = document.querySelectorAll('.ftext');
 
 function clearForm(){
     formFields.forEach(field => 
        field.value = '' )
 }
 
+function getRadioValue(){
+    let output;
+    formRead.forEach(function(radio) {
+        if (radio.checked){
+            output = radio.value;
+         }
+    })
+    return output;
+}
+
 function submitForm(){
-    console.log(formRead.value);
-    let readTick = 'No';
-    if (!formRead.value){
-        readTick = "Yes"
-    }
-    addBookToLibrary(formTitle.value, formAuthor.value, formPages.value, readTick);
+    addBookToLibrary(formTitle.value, formAuthor.value, formPages.value, getRadioValue());
     generateCard(cardNumber, myLibrary[(myLibrary.length)-1]);
     clearForm();
     hideForm();
@@ -107,6 +118,27 @@ function deleteBook(e){
 function deleteFromArray(ref){
     let rightIndex = myLibrary.findIndex(book => book.cardRef == ref);
     myLibrary.splice(rightIndex, 1);
-    console.log(rightIndex);
-    console.table(myLibrary);
+
 }
+
+//Write a function that sets one of the radio buttons to checked, for each card,
+//based on the value of 'read' for the associated book object
+
+function setCardRadios(ref){
+    let yesRadio = document.getElementById('form-read-yes-'+ref);
+    let noRadio = document.getElementById('form-read-no-'+ref);
+    let rightIndex = myLibrary.findIndex(book => book.cardRef == ref);
+    if(myLibrary[rightIndex].read == 'Yes'){
+        yesRadio.checked = true;
+    }else{
+        noRadio.checked = true;
+    }
+}
+
+//Add listeners to each set of radio buttons on each card
+
+
+
+//Write a function to be called by the radio button listers that sets the value
+//of read in the associated book object to the value of the radio button clicked
+//unless the value of read is already the 
