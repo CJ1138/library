@@ -24,19 +24,6 @@ function Book(title, author, pages, read){
     this.read = read
 }
 
-let theHobbit = new Book("The Hobbit", 'JRR Tolkien', 304, 'Yes');
-let greatGatsby = new Book('The Great Gatsby', 'F Scott Fitzgerald', 218, 'Yes');
-let catsCradle = new Book('Cats Cradle', 'Kurt Vonnegut', 304, 'No');
-
-function addBookToLibrary(title,author,pages,read){
-    let book = new Book(title,author,pages,read);
-    myLibrary.push(book);
-}
-
-myLibrary.push(theHobbit, greatGatsby, catsCradle);
-addBookToLibrary("The Unbearable Lightness of Being", 'Milan Kundera', 393, 'Yes');
-addBookToLibrary("Intimacy", 'Hanif Kureshi', 220, 'Yes');
-
 function pushToDB(t, a, p, r){
         dbRoot.child('books/'+cardNumber).set({
             title: t,
@@ -46,6 +33,13 @@ function pushToDB(t, a, p, r){
     })
     cardNumber++;
 }
+
+function pushAllDb(array){
+    myLibrary.forEach(book =>{
+        pushToDB(book.title, book.author, book.pages, book.read);
+    })
+}
+
 
 
 function addListeners(n){
@@ -60,29 +54,37 @@ const cardContainer = document.getElementById('card-container');
 
 let formRead = document.getElementsByName('read');
 
-function generateCard(num, book){
+function generateCard(key, book){
     let bookDiv = document.createElement('div');
-        bookDiv.id = num;
-        bookDiv.classList.add('book-card');
+    bookDiv.id = key;
+    bookDiv.classList.add('book-card');
+    bookDiv.innerHTML = "Title: " + book.title + "</br> Author: " + 
+    bookDiv.classList.add('book-card');
         bookDiv.innerHTML = "Title: " + book.title + "</br> Author: " + 
         book.author + "</br> Page Count: " + book.pages + "</br> Have you read it? " +
         '<label for = "read">Yes </label>' +
-        '<input type="radio" class = "card-radio" name="card-read'+num+'" value = "Yes" id = "form-read-yes-'+num+'">' +
+        '<input type="radio" class = "card-radio" name="card-read'+key+'" value = "Yes" id = "form-read-yes-'+key+'">' +
         '     <label for = "read">No </label>' +
-        '<input type="radio" class = "card-radio" name="card-read'+num+'" value = "No" id = "form-read-no-'+num+'">' +
+        '<input type="radio" class = "card-radio" name="card-read'+key+'" value = "No" id = "form-read-no-'+key+'">' +
         '</br> <span class = "book-delete">Delete Book</span>'
         cardContainer.appendChild(bookDiv);
-        book.cardRef = cardNumber;
-        setCardRadios(cardNumber);
-        addListeners(num);
+        book.cardRef = key;
+        setCardRadios(key);
+        addListeners(key);
         cardNumber++;
-
 }
 
 function displayBooks(){
-    myLibrary.forEach(function(book){
-        generateCard(cardNumber, book);
-    })
+    removeCards()
+    var query = firebase.database().ref("books").orderByKey();
+    query.once("value")
+      .then(function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+          var key = childSnapshot.key;
+          var book = childSnapshot.val();
+          generateCard(key, book);
+      });
+    });
 }
 
 displayBooks();
@@ -92,7 +94,10 @@ const formContainer = document.getElementById('form-container');
 const formX = document.getElementById('x');
 
 function removeCards(){
-    bookCards.forEach(book => book.remove());
+    let bookCards = document.querySelectorAll('.book-card')
+    bookCards.forEach(book => {
+        book.remove()
+    });
 }
 
 function showForm(){
@@ -132,7 +137,10 @@ function getRadioValue(){
 
 function submitForm(){
     pushToDB(formTitle.value, formAuthor.value, formPages.value, getRadioValue());
-    generateCard(cardNumber, myLibrary[(myLibrary.length)-1]);
+    var dbRef = firebase.database().ref
+    generateCard();
+    removeCards();
+    displayBooks();
     clearForm();
     hideForm();
 }
@@ -156,13 +164,32 @@ function deleteFromArray(ref){
 function setCardRadios(ref){
     let yesRadio = document.getElementById('form-read-yes-'+ref);
     let noRadio = document.getElementById('form-read-no-'+ref);
-    if(myLibrary[findBook(ref)].read == 'Yes'){
-        yesRadio.checked = true;
-    }else{
-        noRadio.checked = true;
-    }
+    let dbRef = firebase.database().ref("books/"+ref);
+    dbRef.on('value', snap => {
+        if (snap.val().read == 'Yes'){
+            yesRadio.checked = true;
+        }else{
+            noRadio.checked = true;
+        }
+    })
 }
 
 function setCardRead(e){
     myLibrary[findBook(e.path[1].id)].read = this.value;
 }
+
+//Old code below
+
+/*let theHobbit = new Book("The Hobbit", 'JRR Tolkien', 304, 'Yes');
+let greatGatsby = new Book('The Great Gatsby', 'F Scott Fitzgerald', 218, 'Yes');
+let catsCradle = new Book('Cats Cradle', 'Kurt Vonnegut', 304, 'No');
+
+function addBookToLibrary(title,author,pages,read){
+    let book = new Book(title,author,pages,read);
+    myLibrary.push(book);
+}
+
+myLibrary.push(theHobbit, greatGatsby, catsCradle);
+addBookToLibrary("The Unbearable Lightness of Being", 'Milan Kundera', 393, 'Yes');
+addBookToLibrary("Intimacy", 'Hanif Kureshi', 220, 'Yes');
+*/
