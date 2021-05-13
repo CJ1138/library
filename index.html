@@ -5,38 +5,39 @@
         <title>Library</title>
         <link rel="stylesheet" href="normalize.css">
         <link rel="stylesheet" href="styles.css">
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-database.js"></script>
+
     </head>
     <body>
+        <div id="form-container">
+            <div id="form-div">
+                <div id=form-close><span id="x">X</span></div>
+                <label for="title">Book Title: </label>
+                <input class="ftext" type = "text" id="form-title"></br>
+                <label for="author">Author: </label>
+                <input class="ftext" type = "text" id="form-author"></br>
+                <label for = "pages">Number of Pages: </label>
+                <input class="ftext" type = "text" id="form-pages"></br>
+                Have You Read It?</br></br>
+                <label for = "read">Yes</label>
+                <input type="radio" name="read" value = "Yes" id = "form-read" checked>
+                <label for = "read">No</label>
+                <input type="radio" name="read" value = "No" id = "form-read"></br>
+                </br>
+                <button id="submit">Submit</button>
+            </div>
+        </div>
+        <div id="new-btn-container">
+            <button id="new-book-btn">New Book</button>
+        </div>
         <div id="main-container">
             <h1>Library-O-Matic</h1>
-            <button id="new-book-btn">New Book</button>
-            <div id="form-container">
-                <div id="form-div">
-                    <div id=form-close><span id="x">X</span></div>
-                        <label for="title">Book Title: </label>
-                        <input class="ftext" type = "text" id="form-title"></br>
-                        <label for="author">Author: </label>
-                        <input class="ftext" type = "text" id="form-author"></br>
-                        <label for = "pages">Number of Pages: </label>
-                        <input class="ftext" type = "text" id="form-pages"></br>
-                        Have You Read It?</br></br>
-                        <label for = "read">Yes</label>
-                        <input type="radio" name="read" value = "Yes" id = "form-read">
-                        <label for = "read">No</label>
-                        <input type="radio" name="read" value = "No" id = "form-read"></br>
-                        </br>
-                        <button id="submit">Submit</button>
-                </div>
-            </div>
+            <pre id="object"></pre>
             <div id="card-container">
             </div>
         </div>
-
-
-
-
-
-
         <script src="library.js"></script>
     </body>
 </html>

@@ -1,3 +1,20 @@
+var firebaseConfig = {
+    apiKey: "AIzaSyBpTcsAahSOjMpvesDSyvwz7vmWMA4TNtg",
+    authDomain: "library-b9001.firebaseapp.com",
+    projectId: "library-b9001",
+    storageBucket: "library-b9001.appspot.com",
+    databaseURL: "https://library-b9001-default-rtdb.europe-west1.firebasedatabase.app/",
+    messagingSenderId: "335838617500",
+    appId: "1:335838617500:web:d81c4284747c392af0f259"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+var database = firebase.database();
+
+const dbRoot = database.ref();
+
+let cardNumber = 1110
+
 let myLibrary = [];
 
 function Book(title, author, pages, read){
@@ -20,6 +37,17 @@ myLibrary.push(theHobbit, greatGatsby, catsCradle);
 addBookToLibrary("The Unbearable Lightness of Being", 'Milan Kundera', 393, 'Yes');
 addBookToLibrary("Intimacy", 'Hanif Kureshi', 220, 'Yes');
 
+function pushToDB(t, a, p, r){
+        dbRoot.child('books/'+cardNumber).set({
+            title: t,
+            author: a,
+            pages: p,
+            read: r
+    })
+    cardNumber++;
+}
+
+
 function addListeners(n){
     let currentDiv = document.getElementById(n);
     let delBtn = currentDiv.querySelector('.book-delete');
@@ -27,8 +55,6 @@ function addListeners(n){
     let cardRadios = currentDiv.querySelectorAll('.card-radio');
     cardRadios.forEach(button => button.addEventListener('click', setCardRead));
 }
-
-let cardNumber = 1110;
 
 const cardContainer = document.getElementById('card-container');
 
@@ -52,6 +78,7 @@ function generateCard(num, book){
         cardNumber++;
 
 }
+
 function displayBooks(){
     myLibrary.forEach(function(book){
         generateCard(cardNumber, book);
@@ -104,7 +131,7 @@ function getRadioValue(){
 }
 
 function submitForm(){
-    addBookToLibrary(formTitle.value, formAuthor.value, formPages.value, getRadioValue());
+    pushToDB(formTitle.value, formAuthor.value, formPages.value, getRadioValue());
     generateCard(cardNumber, myLibrary[(myLibrary.length)-1]);
     clearForm();
     hideForm();
