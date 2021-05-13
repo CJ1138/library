@@ -1,3 +1,4 @@
+//Configure Firebase
 var firebaseConfig = {
     apiKey: "AIzaSyBpTcsAahSOjMpvesDSyvwz7vmWMA4TNtg",
     authDomain: "library-b9001.firebaseapp.com",
@@ -9,20 +10,11 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-var database = firebase.database();
-
+const database = firebase.database();
 const dbRoot = database.ref();
 
 let cardNumber = 1110
 
-let myLibrary = [];
-
-function Book(title, author, pages, read){
-    this.title = title
-    this.author = author
-    this.pages = parseInt(pages)
-    this.read = read
-}
 
 function pushToDB(t, a, p, r){
         dbRoot.child('books/'+cardNumber).set({
@@ -137,27 +129,24 @@ function getRadioValue(){
 
 function submitForm(){
     pushToDB(formTitle.value, formAuthor.value, formPages.value, getRadioValue());
-    var dbRef = firebase.database().ref
-    generateCard();
+    var dbRef = firebase.database().ref('books/' + cardNumber);
+    console.log(dbRef);
+    generateCard(cardNumber, dbRef);
     removeCards();
     displayBooks();
     clearForm();
     hideForm();
 }
 
+function deleteFromDb(ref){
+    var remove = firebase.database().ref('books/' + ref);
+    remove.remove();
+}
+
 function deleteBook(e){
     let divToDelete = document.getElementById(e.path[1].id);
     divToDelete.remove();
-    deleteFromArray(e.path[1].id);
-
-}
-
-function findBook(ref){
-    return myLibrary.findIndex(book => book.cardRef == ref);
-}
-
-function deleteFromArray(ref){
-    myLibrary.splice(findBook(ref), 1);
+    deleteFromDb(e.path[1].id);
 
 }
 
@@ -165,7 +154,7 @@ function setCardRadios(ref){
     let yesRadio = document.getElementById('form-read-yes-'+ref);
     let noRadio = document.getElementById('form-read-no-'+ref);
     let dbRef = firebase.database().ref("books/"+ref);
-    dbRef.on('value', snap => {
+    dbRef.once('value', snap => {
         if (snap.val().read == 'Yes'){
             yesRadio.checked = true;
         }else{
@@ -175,21 +164,6 @@ function setCardRadios(ref){
 }
 
 function setCardRead(e){
-    myLibrary[findBook(e.path[1].id)].read = this.value;
+   var rightBook = firebase.database().ref('books/' + e.path[1].id);
+   rightBook.update({'read': this.value});
 }
-
-//Old code below
-
-/*let theHobbit = new Book("The Hobbit", 'JRR Tolkien', 304, 'Yes');
-let greatGatsby = new Book('The Great Gatsby', 'F Scott Fitzgerald', 218, 'Yes');
-let catsCradle = new Book('Cats Cradle', 'Kurt Vonnegut', 304, 'No');
-
-function addBookToLibrary(title,author,pages,read){
-    let book = new Book(title,author,pages,read);
-    myLibrary.push(book);
-}
-
-myLibrary.push(theHobbit, greatGatsby, catsCradle);
-addBookToLibrary("The Unbearable Lightness of Being", 'Milan Kundera', 393, 'Yes');
-addBookToLibrary("Intimacy", 'Hanif Kureshi', 220, 'Yes');
-*/
