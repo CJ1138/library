@@ -13,11 +13,15 @@ firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 const dbRoot = database.ref();
 
-let cardNumber = 1110
+function newBookKey(){
+    let newKey = firebase.database().ref().child('books').push().key;
+    return newKey;
+}
 
+let cardNumber = newBookKey();
 
 function pushToDB(t, a, p, r){
-        dbRoot.child('books/'+cardNumber).set({
+        dbRoot.child('books').push({
             title: t,
             author: a,
             pages: p,
@@ -130,8 +134,6 @@ function getRadioValue(){
 function submitForm(){
     pushToDB(formTitle.value, formAuthor.value, formPages.value, getRadioValue());
     var dbRef = firebase.database().ref('books/' + cardNumber);
-    console.log(dbRef);
-    generateCard(cardNumber, dbRef);
     removeCards();
     displayBooks();
     clearForm();
